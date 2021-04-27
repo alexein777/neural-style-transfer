@@ -113,11 +113,30 @@ def reshape_and_normalize_image(image):
     return reshaped_image - Config.IMAGENET_MEANS
 
 
+def load_and_prepare_image(image_path):
+    """Load image at given path and return a tensor prepared as an input to VGG."""
+    img = Image.open(image_path)
+    img = img.resize((Config.IMAGE_WIDTH, Config.IMAGE_HEIGHT))
+    img = np.asarray(img)
+
+    return reshape_and_normalize_image(img)
+
+
+def unnormalize_image(image):
+    image = image + Config.IMAGENET_MEANS
+    # Remove unnecessary first dimension and clamp remaining values to [0, 255]
+    return np.clip(image[0], 0, 255).astype('uint8')
+
+
 def save_image(image, path):
     """Save numpy image to a given location."""
-    # Unnormalize image before saving for better quality
-    image = image + Config.IMAGENET_MEANS
-
-    # Remove unnecessary first dimension and clamp remaining values to [0, 255]
-    image = np.clip(image[0], 0, 255).astype('uint8')
+    image = unnormalize_image(image)
     Image.fromarray(image).save(path)
+
+
+def get_image_name(image_path):
+    """Extract image name from its path."""
+    slash_idx = image_path.rfind('/') + 1
+    dot_idx = image_path.rfind('.')
+
+    return image_path[slash_idx:dot_idx]
