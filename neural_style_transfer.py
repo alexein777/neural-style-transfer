@@ -2,68 +2,6 @@ from utils import *
 import tensorflow as tf
 
 
-def calculate_content_cost(a_content, a_generated):
-    """Calculate content cost from activations of a chosen layer."""
-
-    # Extract dimensions from activation tensor (ignore mini-batch dimension)
-    _, n_H, n_W, n_C = a_content.shape
-    norm_expr = 1 / (4 * n_H * n_W * n_C)
-
-    return norm_expr * tf.reduce_sum(tf.square(tf.subtract(a_content, a_generated)))
-
-
-def gram_matrix(a_unrolled):
-    """
-    Calculate Gram matrix for activations for a given layer, but unrolled to a matrix instead of tensor.
-    :param a_unrolled: Matrix of shape (n_C, n_H * n_W)
-    """
-
-    # G = A * A_T
-    return tf.matmul(a_unrolled, tf.transpose(a_unrolled))
-
-
-def layer_style_cost(a_style, a_generated):
-    """Calculate style cost for activations of a specific layer."""
-
-    _, n_H, n_W, n_C = a_style.shape
-
-    # Unroll activation tensors into matrices, but change the order of dimensions so that n_C is first
-    a_style_unrolled = tf.reshape(tf.transpose(a_style, perm=[3, 1, 2, 0]), shape=[n_C, -1])
-    a_generated_unrolled = tf.reshape(tf.transpose(a_generated, perm=[3, 1, 2, 0]), shape=[n_C, -1])
-
-    gram_style = gram_matrix(a_style_unrolled)
-    gram_generated = gram_matrix(a_generated_unrolled)
-    norm_expr = 1 / (4 * (n_C * n_H * n_W) ** 2)
-
-    return norm_expr * tf.reduce_sum(tf.square(tf.subtract(gram_style, gram_generated)))
-
-
-def calculate_style_cost(sess, model, style_layer_weights):
-    """
-    Calculate overall style cost of the model.
-    :param model: Dict, keys - names of VGG layers, values - tensors
-    :param style_layer_weights: Dict, keys - names of VGG layers, values - weights
-    """
-
-    cost = 0
-
-    for layer_name, style_weight in style_layer_weights.items():
-        # Extract output tensor from current layer
-        out = model[layer_name]
-        a_style = sess.run(out)
-        a_generated = out  # will be calculated later, after assigning input image
-
-        layer_cost = layer_style_cost(a_style, a_generated)
-        cost += style_weight * layer_cost
-
-    return cost
-
-
-def calculate_total_cost(content_cost, style_cost, alpha=10.0, beta=40.0):
-    """Calculate total cost function as linear combination of content and style costs."""
-    return alpha * content_cost + beta * style_cost
-
-
 class NeuralStyleTransfer:
     STYLE_LAYER_WEIGHTS = {
         'conv1_1': 0.15,
@@ -86,14 +24,17 @@ class NeuralStyleTransfer:
                        content_img_path,
                        style_img_path,
                        output_img_path='default',
-                       style_layer_weights=STYLE_LAYER_WEIGHTS,
+                       style_layer_weights=None,
                        noise_ratio=0.2,
                        learning_rate=1,
                        alpha=1e5,
                        beta=1e3,
                        num_iter=500,
-                       print_cost=True):
+                       print_cost=True,
+                       print_name_iter=False):
         # Load images, resize and normalize them to prepare them as inputs to VGG
+        if style_layer_weights is None:
+            style_layer_weights = self.STYLE_LAYER_WEIGHTS
         content_image = load_and_prepare_image(content_img_path)
         style_image = load_and_prepare_image(style_img_path)
         init_generated_image = generate_noise_image(content_image, noise_ratio=noise_ratio)
@@ -103,14 +44,14 @@ class NeuralStyleTransfer:
 
         # Get activations for a content image from selected layer
         out = self.model[self.content_layer_name]  # This is still a placeholder!
-        a_content = self.sess.run(out)  # This is evaluated to get contet activations
+        a_content = self.sess.run(out)  # This is evaluated to get content activations
         a_generated = out  # Still a placeholder, will be evaluated in training iterations
 
         # Define content, style and total costs (evaluated in training)
-        content_cost = calculate_content_cost(a_content, a_generated)
+        content_cost = self._calculate_content_cost(a_content, a_generated)
         self.sess.run(self.model['input'].assign(style_image))
-        style_cost = calculate_style_cost(self.sess, self.model, style_layer_weights)
-        total_cost = calculate_total_cost(content_cost, style_cost, alpha=alpha, beta=beta)
+        style_cost = self._calculate_style_cost(style_layer_weights)
+        total_cost = self._calculate_total_cost(content_cost, style_cost, alpha=alpha, beta=beta)
 
         # Define optimizer and training step to minimize total cost
         optimizer = tf.compat.v1.train.AdamOptimizer(learning_rate=learning_rate)
@@ -130,7 +71,9 @@ class NeuralStyleTransfer:
 
             if print_cost and i % 20 == 0:
                 _total_cost, _content_cost, _style_cost = self.sess.run([total_cost, content_cost, style_cost])
-                print(f'\nIteration: {i}')
+                print(f'\nIteration: {i}', end='')
+                print(' [' + get_image_name(content_img_path) + ' + ' + get_image_name(style_img_path) + ']'
+                      if print_name_iter else '\n')
                 print('------------------------------------')
                 print(f'\t* Total cost: {_total_cost}')
                 print(f'\t* Content cost: {_content_cost}')
@@ -147,6 +90,72 @@ class NeuralStyleTransfer:
             save_image(generated_image, output_img_path)
 
         # Print prompt and show image immediately
-        print('Image generated successfuly!')
+        print('\nImage generated successfuly!')
 
         return generated_image
+
+    def generate_images(self, config_list):
+        """Generate multiple images based on a list of configuration dicts."""
+        generated_images = []
+        for config in config_list:
+            generated_image = self.generate_image(**config, print_name_iter=True)
+            generated_images.append(generated_image)
+
+        print('\nALL IMAGES SUCCESSFULLY GENERATED.')
+
+        return generated_images
+
+    def _calculate_content_cost(self, a_content, a_generated):
+        """Calculate content cost from activations of a chosen layer."""
+
+        # Extract dimensions from activation tensor (ignore mini-batch dimension)
+        _, n_H, n_W, n_C = a_content.shape
+        norm_expr = 1 / (4 * n_H * n_W * n_C)
+
+        return norm_expr * tf.reduce_sum(tf.square(tf.subtract(a_content, a_generated)))
+
+    def _gram_matrix(self, a_unrolled):
+        """
+        Calculate Gram matrix for activations for a given layer, but unrolled to a matrix instead of tensor.
+        :param a_unrolled: Matrix of shape (n_C, n_H * n_W)
+        """
+
+        # G = A * A_T
+        return tf.matmul(a_unrolled, tf.transpose(a_unrolled))
+
+    def _layer_style_cost(self, a_style, a_generated):
+        """Calculate style cost for activations of a specific layer."""
+
+        _, n_H, n_W, n_C = a_style.shape
+
+        # Unroll activation tensors into matrices, but change the order of dimensions so that n_C is first
+        a_style_unrolled = tf.reshape(tf.transpose(a_style, perm=[3, 1, 2, 0]), shape=[n_C, -1])
+        a_generated_unrolled = tf.reshape(tf.transpose(a_generated, perm=[3, 1, 2, 0]), shape=[n_C, -1])
+
+        gram_style = self._gram_matrix(a_style_unrolled)
+        gram_generated = self._gram_matrix(a_generated_unrolled)
+        norm_expr = 1 / (4 * (n_C * n_H * n_W) ** 2)
+
+        return norm_expr * tf.reduce_sum(tf.square(tf.subtract(gram_style, gram_generated)))
+
+    def _calculate_style_cost(self, style_layer_weights):
+        """
+        Calculate overall style cost of the model.
+        :param style_layer_weights: Dict, keys - names of VGG layers, values - weights
+        """
+
+        cost = 0
+        for layer_name, style_weight in style_layer_weights.items():
+            # Extract output tensor from current layer
+            out = self.model[layer_name]
+            a_style = self.sess.run(out)
+            a_generated = out  # will be calculated later, after assigning input image
+
+            layer_cost = self._layer_style_cost(a_style, a_generated)
+            cost += style_weight * layer_cost
+
+        return cost
+
+    def _calculate_total_cost(self, content_cost, style_cost, alpha=1e5, beta=4e3):
+        """Calculate total cost function as linear combination of content and style costs."""
+        return alpha * content_cost + beta * style_cost
