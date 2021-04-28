@@ -21,6 +21,8 @@ Given a content image and a style image, generate new image with the same conten
 | ![la-casa-de-papel](https://github.com/alexein777/neural-style-transfer/blob/master/output/combo/la-casa-de-papel%3D(600%2C%20400).jpg) | ![abstract-painting](https://github.com/alexein777/neural-style-transfer/blob/master/output/combo/abstract-painting%3D(600%2C%20400).jpg) | ![la-casa-de-papel+painting](https://github.com/alexein777/neural-style-transfer/blob/master/output/combo/la-casa-de-papel%2Babstract-painting_a%3D100000.0%2Cb%3D4000.0%2Citer%3D1000%3D(600%2C%20400).jpg) |
 | ![knightfall](https://github.com/alexein777/neural-style-transfer/blob/master/output/combo/knightfall%3D(600%2C%20400).jpg) | ![monet](https://github.com/alexein777/neural-style-transfer/blob/master/output/combo/monet-soleil-levant%3D(600%2C%20400).jpg) | ![knightfall+monet](https://github.com/alexein777/neural-style-transfer/blob/master/output/combo/knightfall%2Bmonet-soleil-levant_a%3D100000.0%2Cb%3D5000.0%2Citer%3D1000%3D(600%2C%20400).jpg) |
 
+Feel free to checkout other generated images at `output/original`.
+
 ## Training info
 
 Most generated images used content image as initial generated image (`noise_ratio=0`). All generated images used `\alpha=1e5` (contet loss weight), while `\beta` (style loss weight) varied from `1e2` to `1e5`.
