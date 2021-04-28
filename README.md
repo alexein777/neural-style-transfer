@@ -34,4 +34,4 @@ Code is written using TensorFlow v1.0 and carries some "ugliness" with it. I wil
 
 ## Acknowledgements
 
-Check out some other cool repos on Neural Style Transfer, like https://github.com/gordicaleksa/pytorch-neural-style-transfer (hyperparameter values used in this repo are inspired by @gordicaleksa's work).
+Check out some other cool repos on Neural Style Transfer, like https://github.com/gordicaleksa/pytorch-neural-style-transfer (hyperparameter values used in this repo are inspired by Aleksa Gordić's work).
