@@ -23,7 +23,7 @@ Given a content image and a style image, generate new image with the same conten
 
 ## Training info
 
-Most generated images used content image as initial generated image (`noise_ratio=0`). All generated images used `\alpha=1e5`, while \beta varied from `1e2` to `1e5`.
+Most generated images used content image as initial generated image (`noise_ratio=0`). All generated images used `\alpha=1e5` (contet loss weight), while `\beta` (style loss weight) varied from `1e2` to `1e5`.
 Number of iterations used for all generated images is `1000` (results could probably be a bit better with more iterations, but it takes about ~30min for 1000 iterations on my machine).
 
 ## Important notes
@@ -34,4 +34,4 @@ Code is written using TensorFlow v1.0 and carries some "ugliness" with it. I wil
 
 ## Acknowledgements
 
-Check out some other cool repos on Neural Style Transfer, like https://github.com/gordicaleksa/pytorch-neural-style-transfer (hyperparameter values used in this repo are inspired by Aleksa Gordić's work).
+Check out some other cool repos on Neural Style Transfer, like https://github.com/gordicaleksa/pytorch-neural-style-transfer (hyperparameter values used in this repo are inspired by @gordicaleksa's work).
