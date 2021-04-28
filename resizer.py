@@ -10,57 +10,37 @@ INPUT_DIR = 'input'
 OUTPUT_DIR = 'output/combo'
 CONFIG_LIST = [
     {
-        'content': os.path.join(INPUT_DIR, 'content', 'beth-harmon.jpg'),
-        'style': os.path.join(INPUT_DIR, 'style', 'scream.jpg')
+        'content': os.path.join(INPUT_DIR, 'content', 'bilbo.jpg'),
+        'style': os.path.join(INPUT_DIR, 'style', 'sunny-forrest.jpg'),
     },
     {
-        'content': os.path.join(INPUT_DIR, 'content', 'beatles.jpg'),
-        'style': os.path.join(INPUT_DIR, 'style', 'colorful.jpg')
+        'content': os.path.join(INPUT_DIR, 'content', 'eiffel.jpg'),
+        'style': os.path.join(INPUT_DIR, 'style', 'monet-twilight-venice.jpg'),
     },
     {
-        'content': os.path.join(INPUT_DIR, 'content', 'call-of-duty-mw2.jpg'),
-        'style': os.path.join(INPUT_DIR, 'style', 'monet-grenouillere.jpg')
+        'content': os.path.join(INPUT_DIR, 'content', 'hourglass.jpg'),
+        'style': os.path.join(INPUT_DIR, 'style', 'sass.jpg'),
     },
     {
-        'content': os.path.join(INPUT_DIR, 'content', 'captain-jack-sparrow.jpeg'),
-        'style': os.path.join(INPUT_DIR, 'style', 'kosovo-maiden.jpg')
+        'content': os.path.join(INPUT_DIR, 'content', 'jesus-disciples.jpg'),
+        'style': os.path.join(INPUT_DIR, 'style', 'sea-fall.jpg'),
     },
     {
-        'content': os.path.join(INPUT_DIR, 'content', 'dragon.jpg'),
-        'style': os.path.join(INPUT_DIR, 'style', 'storm.jpg')
+        'content': os.path.join(INPUT_DIR, 'content', 'knightfall.jpg'),
+        'style': os.path.join(INPUT_DIR, 'style', 'monet-soleil-levant.jpg'),
     },
     {
-        'content': os.path.join(INPUT_DIR, 'content', 'golden-gate.jpg'),
-        'style': os.path.join(INPUT_DIR, 'style', 'wave.jpg')
+        'content': os.path.join(INPUT_DIR, 'content', 'la-casa-de-papel.jpg'),
+        'style': os.path.join(INPUT_DIR, 'style', 'abstract-painting.jpg'),
     },
     {
-        'content': os.path.join(INPUT_DIR, 'content', 'jon-and-daenerys.jpg'),
-        'style': os.path.join(INPUT_DIR, 'style', 'monet.jpg')
+        'content': os.path.join(INPUT_DIR, 'content', 'skyrim.jpg'),
+        'style': os.path.join(INPUT_DIR, 'style', 'autumn-valley.jpg'),
     },
     {
-        'content': os.path.join(INPUT_DIR, 'content', 'lion.jpg'),
-        'style': os.path.join(INPUT_DIR, 'style', 'mona-lisa.jpg')
-    },
-    {
-        'content': os.path.join(INPUT_DIR, 'content', 'mountain-landscape.jpg'),
-        'style': os.path.join(INPUT_DIR, 'style', 'van-gogh-starry-night.jpg')
-    },
-    {
-        'content': os.path.join(INPUT_DIR, 'content', 'neo-trinity.jpg'),
-        'style': os.path.join(INPUT_DIR, 'style', 'gernika.jpg')
-    },
-    {
-        'content': os.path.join(INPUT_DIR, 'content', 'optimus-prime.jpg'),
-        'style': os.path.join(INPUT_DIR, 'style', 'frostfire.jpg')
-    },
-    {
-        'content': os.path.join(INPUT_DIR, 'content', 'the-return-of-the-king.jpg'),
-        'style': os.path.join(INPUT_DIR, 'style', 'wheat-field.png')
-    },
-    {
-        'content': os.path.join(INPUT_DIR, 'content', 'witcher.jpg'),
-        'style': os.path.join(INPUT_DIR, 'style', 'winter-bridge.jpg')
-    },
+        'content': os.path.join(INPUT_DIR, 'content', 'selfie-rooftop.jpg'),
+        'style': os.path.join(INPUT_DIR, 'style', 'abstract-colorful.jpg'),
+    }
 ]
 
 # Resize content and style images first and save them to OUTPUT_DIR
@@ -87,6 +67,7 @@ for img_name in os.listdir('output/original'):
     image_new_path = os.path.join(OUTPUT_DIR, image_new_name)
     image_resized.save(image_new_path + '.jpg')
 
+print('Images resized successfully.')
 # img = Image.open('output/original/call-of-duty-mw2+monet-grenouillere_a=100000.0,b=4000.0,iter=1000.jpg')
 # img = resize_image(img, fx=1.5, fy=1.5)
 # plt.imshow(img)
