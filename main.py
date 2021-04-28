@@ -7,18 +7,34 @@ if __name__ == '__main__':
     config_list = [
         {
             'content_img_path': 'input/beatles.jpg',
-            'style_img_path': 'input/rainy-night.jpg',
+            'style_img_path': 'input/colorful.jpg',
             'noise_ratio': 0,
             'alpha': 1e5,
-            'beta': 5e4,
+            'beta': 5e3,
             'num_iter': 1000
         },
         {
-            'content_img_path': 'input/dragon.jpg',
-            'style_img_path': 'input/storm.jpg',
+            'content_img_path': 'input/call-of-duty-mw2.jpg',
+            'style_img_path': 'input/monet-grenouillere.jpg',
             'noise_ratio': 0,
             'alpha': 1e5,
-            'beta': 3e3,
+            'beta': 4e3,
+            'num_iter': 1000
+        },
+        {
+            'content_img_path': 'input/the-return-of-the-king.jpg',
+            'style_img_path': 'input/wheat-field.png',
+            'noise_ratio': 0,
+            'alpha': 1e5,
+            'beta': 2e3,
+            'num_iter': 1000
+        },
+        {
+            'content_img_path': 'input/witcher.jpg',
+            'style_img_path': 'input/winter-bridge.jpg',
+            'noise_ratio': 0,
+            'alpha': 1e5,
+            'beta': 2e3,
             'num_iter': 1000
         },
     ]

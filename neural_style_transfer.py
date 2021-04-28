@@ -32,9 +32,13 @@ class NeuralStyleTransfer:
                        num_iter=500,
                        print_cost=True,
                        print_name_iter=False):
-        # Load images, resize and normalize them to prepare them as inputs to VGG
+        """Generate image using given content and style images."""
+
+        # If style weights are not specified, use defaults
         if style_layer_weights is None:
             style_layer_weights = self.STYLE_LAYER_WEIGHTS
+
+        # Load images, resize and normalize them to prepare them as inputs to VGG
         content_image = load_and_prepare_image(content_img_path)
         style_image = load_and_prepare_image(style_img_path)
         init_generated_image = generate_noise_image(content_image, noise_ratio=noise_ratio)
@@ -89,7 +93,6 @@ class NeuralStyleTransfer:
         else:
             save_image(generated_image, output_img_path)
 
-        # Print prompt and show image immediately
         print('\nImage generated successfuly!')
 
         return generated_image
