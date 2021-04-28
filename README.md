@@ -5,6 +5,6 @@ Given a content image and a style image, generate new image with the same conten
 
 ## Examples
 
-| Content        | Style           | Generated  |
-| ------------- |:-------------:| -----:|
-| ![beth-harmon](https://github.com/alexein777/neural-style-transfer/blob/master/input/beth-harmon.jpg)      | ![scream](https://github.com/alexein777/neural-style-transfer/blob/master/input/scream.jpg) | ![beth-harmon+scream](https://github.com/alexein777/neural-style-transfer/blob/master/output/beth-harmon%2Bscream.jpg) |
+| Content    | Style      | Generated  |
+| ------------- | ------------- | ------------- |
+| ![beth-harmon](https://github.com/alexein777/neural-style-transfer/blob/master/output/combo/beth-harmon%3D(600%2C%20400).jpg)      | ![scream](https://github.com/alexein777/neural-style-transfer/blob/master/output/combo/scream%3D(600%2C%20400).jpg) | ![beth-harmon+scream](https://github.com/alexein777/neural-style-transfer/blob/master/output/combo/beth-harmon%2Bscream%3D(600%2C%20400).jpg) |
