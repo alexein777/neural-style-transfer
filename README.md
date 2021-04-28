@@ -23,11 +23,15 @@ Given a content image and a style image, generate new image with the same conten
 
 ## Training info
 
-Most generated images used content image as initial generated image (`noise_ratio=0`). All generated images used `\alpha=1e5`, while \beta varied from `1e2` to `1e5`.
+Most generated images used content image as initial generated image (`noise_ratio=0`). All generated images used `$\alpha$=1e5`, while `$\beta$` varied from `1e2` to `1e5`.
 Number of iterations used for all generated images is `1000` (results could probably be a bit better with more iterations, but it takes about ~30min for 1000 iterations on my machine).
 
 ## Important notes
 
 Model used for image generation is VGG-19. However, model isn't pushed to repo due to size, so function `load_vgg_model()` won't work. Model can be downloaded [here](https://www.kaggle.com/keras/vgg19) and has to be put in `models/imagenet-vgg-19.mat`, or simply change `load_vgg_model()` function to load model from your local machine.
 
-Code is written using TensorFlow v1.0 and carries some "ugliness" with it. I will migrate to TensorFlow v2.0 or PyTorch as soon as possible. Meanwhile, check out some other cool repos on Neural Style Transfer, like https://github.com/gordicaleksa/pytorch-neural-style-transfer (hyperparameter values used in this repo are inspired by Aleksa Gordić's work).
+Code is written using TensorFlow v1.0 and carries some "ugliness" with it. I will migrate to TensorFlow v2.0 or PyTorch as soon as possible.
+
+## Acknowledgements
+
+Check out some other cool repos on Neural Style Transfer, like https://github.com/gordicaleksa/pytorch-neural-style-transfer (hyperparameter values used in this repo are inspired by Aleksa Gordić's work).
