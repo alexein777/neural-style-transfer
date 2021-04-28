@@ -87,7 +87,7 @@ class NeuralStyleTransfer:
             content_name = get_image_name(content_img_path)
             style_name = get_image_name(style_img_path)
             output_name = content_name + '+' + style_name + f'_a={alpha},b={beta},iter={num_iter}'
-            output_path = os.path.join(Config.OUTPUT_DIR, output_name + '.jpg')
+            output_path = os.path.join(Config.OUTPUT_DIR, 'original', output_name + '.jpg')
 
             save_image(generated_image, output_path)
         else:

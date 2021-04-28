@@ -128,6 +128,18 @@ def unnormalize_image(image):
     return np.clip(image[0], 0, 255).astype('uint8')
 
 
+def resize_image(image, size=None, fx=1.0, fy=1.0):
+    """Resize image to new size. If new_size is None, scaling factors fx and fy are used instead."""
+    if size is None:
+        width = int(fx * image.size[0])
+        height = int(fy * image.size[1])
+        new_size = (width, height)
+    else:
+        new_size = size
+
+    return image.resize(new_size)
+
+
 def save_image(image, path):
     """Save numpy image to a given location."""
     image = unnormalize_image(image)
@@ -136,7 +148,7 @@ def save_image(image, path):
 
 def get_image_name(image_path):
     """Extract image name from its path."""
-    slash_idx = image_path.rfind('/') + 1
+    slash_idx = image_path.rfind(os.path.sep) + 1
     dot_idx = image_path.rfind('.')
 
     return image_path[slash_idx:dot_idx]
