@@ -21,3 +21,13 @@ Given a content image and a style image, generate new image with the same conten
 | ![lion](https://github.com/alexein777/neural-style-transfer/blob/master/output/combo/lion%3D(600%2C%20400).jpg) | ![mona-lisa](https://github.com/alexein777/neural-style-transfer/blob/master/output/combo/mona-lisa%3D(600%2C%20400).jpg) | ![lion+mona-lisa](https://github.com/alexein777/neural-style-transfer/blob/master/output/combo/lion%2Bmona-lisa_a%3D100000.0%2Cb%3D4000.0%2Citer%3D1000%3D(600%2C%20400).jpg) |
 | ![beatles](https://github.com/alexein777/neural-style-transfer/blob/master/output/combo/beatles%3D(600%2C%20400).jpg) | ![colorful](https://github.com/alexein777/neural-style-transfer/blob/master/output/combo/colorful%3D(600%2C%20400).jpg) | ![colorful-beatles](https://github.com/alexein777/neural-style-transfer/blob/master/output/combo/beatles%2Bcolorful_a%3D100000.0%2Cb%3D5000.0%2Citer%3D1000%3D(600%2C%20400).jpg) |
 
+## Training info
+
+Most generated images used content image as initial generated image (`noise_ratio=0`). All generated images used `\alpha=1e5`, while \beta varied from `1e2` to `1e5`.
+Number of iterations used for all generated images is `1000` (results could probably be a bit better with more iterations, but it takes about ~30min for 1000 iterations on my machine).
+
+## Important notes
+
+Model used for image generation is VGG-19. However, model isn't pushed to repo due to size, so function `load_vgg_model()` won't work. Model can be downloaded [here](https://www.kaggle.com/keras/vgg19) and has to be put in `models/imagenet-vgg-19.mat`, or simply change `load_vgg_model()` function to load model from your local machine.
+
+Code is written using TensorFlow v1.0 and carries some "ugliness" with it. I will migrate to TensorFlow v2.0 or PyTorch as soon as possible. Meanwhile, check out some other cool repos on Neural Style Transfer, like https://github.com/gordicaleksa/pytorch-neural-style-transfer (hyperparameter values used in this repo are inspired by Aleksa Gordić's work).
