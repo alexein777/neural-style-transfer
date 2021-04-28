@@ -23,7 +23,7 @@ Given a content image and a style image, generate new image with the same conten
 
 ## Training info
 
-Most generated images used content image as initial generated image (`noise_ratio=0`). All generated images used `$\alpha$=1e5`, while `$\beta$` varied from `1e2` to `1e5`.
+Most generated images used content image as initial generated image (`noise_ratio=0`). All generated images used `\alpha=1e5`, while \beta varied from `1e2` to `1e5`.
 Number of iterations used for all generated images is `1000` (results could probably be a bit better with more iterations, but it takes about ~30min for 1000 iterations on my machine).
 
 ## Important notes
